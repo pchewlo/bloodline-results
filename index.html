@@ -203,6 +203,46 @@
   tr.me td:first-child{box-shadow:3px 0 0 var(--accent) inset}
   .medal-mini{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:1px}
 
+  /* ---------- January -> July comparison ---------- */
+  .vs-hero{display:flex;align-items:center;justify-content:center;gap:22px;margin-top:22px;background:var(--surface);border:1px solid var(--ring);border-radius:12px;padding:26px 18px}
+  .vs-end{text-align:center}
+  .vs-when{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+  .vs-when.hot{color:var(--accent-ink)}
+  .vs-place{font-size:60px;font-weight:900;line-height:1;margin-top:4px;color:var(--ink-2)}
+  .vs-place.hot{color:var(--ink)}
+  .vs-place sup{font-size:22px;font-weight:800;vertical-align:super}
+  .vs-note{font-size:11px;color:var(--ink-3);margin-top:6px}
+  .vs-mid{display:flex;flex-direction:column;align-items:center;gap:8px}
+  .vs-jump{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);border-radius:999px;padding:3px 10px;white-space:nowrap}
+  .vs-arrow{font-size:24px;color:var(--baseline);line-height:1}
+
+  .cmp-card{margin-top:14px;background:var(--surface);border:1px solid var(--ring);border-radius:12px;padding:4px 20px 14px}
+  .cmp-legend{padding:14px 0 4px;font-size:11.5px;color:var(--ink-3)}
+  .cmp-legend .lj{color:var(--ink-2);font-weight:600}
+  .cmp-legend .lu{color:var(--accent-ink);font-weight:700}
+  .cmp-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:11px 0;border-top:1px solid var(--hairline)}
+  .cmp-metric{font-size:13.5px;color:var(--ink-2)}
+  .cmp-vals{display:flex;align-items:baseline;gap:9px;font-variant-numeric:tabular-nums}
+  .cmp-jan{color:var(--ink-3);font-size:14px;text-align:right}
+  .cmp-sep{color:var(--baseline);font-size:12px}
+  .cmp-jul{color:var(--ink);font-weight:750;font-size:16px}
+  .cmp-delta{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap;margin-left:2px}
+  .cmp-delta.up{color:var(--accent-ink);background:var(--accent-soft)}
+  .cmp-delta.flat{color:var(--ink-3);background:var(--surface-2)}
+  .cmp-row.hot .cmp-metric{color:var(--ink);font-weight:700}
+  .cmp-row.hot .cmp-jul{color:var(--accent-ink)}
+
+  .ret-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:12px;margin-top:18px}
+  .ret-card{background:var(--surface);border:1px solid var(--ring);border-radius:12px;padding:18px}
+  .ret-name{font-size:16px;font-weight:800;letter-spacing:.02em}
+  .ret-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;margin-top:9px;font-variant-numeric:tabular-nums}
+  .ret-j{color:var(--ink-3);font-size:12.5px}
+  .ret-arrow{color:var(--baseline)}
+  .ret-u{color:var(--accent-ink);font-weight:750;font-size:13.5px}
+  .ret-why{font-size:12.5px;color:var(--ink-2);margin-top:9px}
+  .fun-fact{margin-top:16px;font-size:12.5px;color:var(--ink-3);font-style:italic}
+  .fun-fact b{color:var(--ink-2);font-style:normal}
+
   /* ---------- footer ---------- */
   footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--hairline);font-size:12px;color:var(--ink-3)}
   footer a{color:var(--ink-2)}
@@ -211,6 +251,10 @@
     .hero-num{font-size:84px}
     .row{grid-template-columns:120px 1fr}
     .squad-row{grid-template-columns:1fr}
+    .vs-hero{gap:12px;padding:20px 12px}
+    .vs-place{font-size:46px}
+    .vs-place sup{font-size:18px}
+    .vs-jump{font-size:9.5px}
 
     /* Bar charts: pull the value labels inside the bars so they can't run
        off the right edge on a narrow screen */
@@ -390,7 +434,69 @@
     </div>
   </section>
 
-  <div class="part"><div class="line"></div><div class="p-kick"><b>Part II</b> · The road ahead</div><div class="line"></div></div>
+  <div class="part"><div class="line"></div><div class="p-kick"><b>Part II</b> · Then vs now</div><div class="line"></div></div>
+
+  <section style="margin-top:40px">
+    <div class="sec-kicker">Two events, six months apart</div>
+    <div class="sec-title">January → July: the leap</div>
+    <p class="sec-sub">On 31 January we took a big squad to a much larger GI London and ground out a mid-pack finish. In July a leaner team turned fewer matches into more medals — and a top-four result.</p>
+
+    <div class="vs-hero">
+      <div class="vs-end">
+        <div class="vs-when">31 Jan</div>
+        <div class="vs-place">16<sup>th</sup></div>
+        <div class="vs-note">of 200+ clubs</div>
+      </div>
+      <div class="vs-mid">
+        <div class="vs-jump">▲ 12 places</div>
+        <div class="vs-arrow">→</div>
+      </div>
+      <div class="vs-end">
+        <div class="vs-when hot">11 Jul</div>
+        <div class="vs-place hot">4<sup>th</sup></div>
+        <div class="vs-note">of 100+ clubs</div>
+      </div>
+    </div>
+
+    <div class="cmp-card">
+      <div class="cmp-legend">Each row reads <span class="lj">January</span> → <span class="lu">July</span></div>
+      <div class="cmp-row"><div class="cmp-metric">Final placing — Overall Team</div><div class="cmp-vals"><span class="cmp-jan">16th</span><span class="cmp-sep">→</span><span class="cmp-jul">4th</span><span class="cmp-delta up">▲ 12</span></div></div>
+      <div class="cmp-row"><div class="cmp-metric">Team points</div><div class="cmp-vals"><span class="cmp-jan">547</span><span class="cmp-sep">→</span><span class="cmp-jul">746</span><span class="cmp-delta up">+36%</span></div></div>
+      <div class="cmp-row hot"><div class="cmp-metric">Points per athlete</div><div class="cmp-vals"><span class="cmp-jan">39.1</span><span class="cmp-sep">→</span><span class="cmp-jul">74.6</span><span class="cmp-delta up">+91%</span></div></div>
+      <div class="cmp-row"><div class="cmp-metric">Medals won</div><div class="cmp-vals"><span class="cmp-jan">6</span><span class="cmp-sep">→</span><span class="cmp-jul">9</span><span class="cmp-delta up">+3</span></div></div>
+      <div class="cmp-row"><div class="cmp-metric">Submissions</div><div class="cmp-vals"><span class="cmp-jan">15</span><span class="cmp-sep">→</span><span class="cmp-jul">14</span><span class="cmp-delta flat">−1</span></div></div>
+      <div class="cmp-row"><div class="cmp-metric">Matches fought</div><div class="cmp-vals"><span class="cmp-jan">81</span><span class="cmp-sep">→</span><span class="cmp-jul">61</span><span class="cmp-delta flat">−20</span></div></div>
+      <div class="cmp-row"><div class="cmp-metric">Athletes fielded</div><div class="cmp-vals"><span class="cmp-jan">14</span><span class="cmp-sep">→</span><span class="cmp-jul">10</span><span class="cmp-delta flat">−4</span></div></div>
+    </div>
+
+    <p class="p4p-note">Worth being straight about it: January's field was nearly <strong>twice the size</strong> — 1,870 athletes to July's 1,036 — so 16th there was earned against a lot more clubs. The fairer read is per-head, and there the story only gets better. The July squad scored almost <strong>double the points per athlete</strong> (74.6 vs 39.1) and medalled nearly one-for-one — <strong>0.9 medals per athlete</strong> against 0.4 in January. Fewer people, sharper day. The medals got shinier too: <strong>four silvers in July after none in January</strong>.</p>
+  </section>
+
+  <section>
+    <div class="sec-kicker">The ones who came back</div>
+    <div class="sec-title">Three fighters did both</div>
+    <p class="sec-sub">Only three of the July squad had also competed in January — most of the team turned over, yet every one of the returners levelled up.</p>
+    <div class="ret-grid">
+      <div class="ret-card">
+        <div class="ret-name">Oyin Bishi</div>
+        <div class="ret-line"><span class="ret-j">Jan · 5–2, 4 subs</span><span class="ret-arrow">→</span><span class="ret-u">Jul · 4–0, MVP</span></div>
+        <div class="ret-why">A star at both ends — seven submissions across the two events, and July's Performance of the Day.</div>
+      </div>
+      <div class="ret-card">
+        <div class="ret-name">Ghadir Malek</div>
+        <div class="ret-line"><span class="ret-j">Jan · 7–3, 4 subs</span><span class="ret-arrow">→</span><span class="ret-u">Jul · 6 wins</span></div>
+        <div class="ret-why">The metronome — most wins on the team in July, four submissions back in January.</div>
+      </div>
+      <div class="ret-card">
+        <div class="ret-name">Amani Amani</div>
+        <div class="ret-line"><span class="ret-j">Jan · 0–2</span><span class="ret-arrow">→</span><span class="ret-u">Jul · 5 wins</span></div>
+        <div class="ret-why">The turnaround. Winless in January; five wins and an unbeaten no-gi run in July.</div>
+      </div>
+    </div>
+    <p class="fun-fact">Fun fact from January — the men's gi white-belt −185 lb bracket was so full of Bloodline that <b>Ghadir and Pratik Rai were drawn against each other</b>; Ghadir took it by submission in just over three minutes.</p>
+  </section>
+
+  <div class="part"><div class="line"></div><div class="p-kick"><b>Part III</b> · The road ahead</div><div class="line"></div></div>
 
   <section style="margin-top:40px">
     <div class="sec-kicker">Next time out</div>
@@ -439,7 +545,7 @@
   </section>
 
   <footer>
-    Source: <a href="https://grapplingindustries.smoothcomp.com/en/event/25914/toplist/119919/102366">Smoothcomp — Grappling Industries London, Overall Team – Adults toplist</a>, as published 13 July 2026 · Compiled for Bloodline Gym, 9-15 Helmsley Place, London E8.
+    Sources: <a href="https://grapplingindustries.smoothcomp.com/en/event/25914/toplist/119919/102366">Smoothcomp — Grappling Industries London, Overall Team – Adults toplist</a> (11 July 2026, as published 13 July) and the 31 January 2026 GI London results · January figures reconciled match-by-match against the official team line (40–41, 6 medals) · Compiled for Bloodline Gym, 9-15 Helmsley Place, London E8.
   </footer>
 </div>
 
