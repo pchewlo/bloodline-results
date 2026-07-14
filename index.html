@@ -1,30 +1,552 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bloodline Results</title>
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-    }
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #0b0b0f;
-      color: #f5f5f5;
-    }
-    h1 {
-      font-size: clamp(2rem, 8vw, 5rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloodline Gym — Grappling Industries London 2026</title>
+<style>
+  :root{
+    color-scheme: dark;
+    --page:#09090a;        /* site --white-hsl: 240, 5.26%, 3.73% */
+    --surface:#151516;
+    --surface-2:#1d1d1f;
+    --ink:#ffffff;
+    --ink-2:#a8acae;       /* site --lightAccent-hsl: 205.71, 3.95%, 65.29% */
+    --ink-3:#7f8285;
+    --hairline:#29292b;
+    --baseline:#3a3a3c;
+    --ring:rgba(255,255,255,0.10);
+    --accent:#c59014;      /* site --black-hsl: 42.03, 81.57%, 42.55% (brand gold) */
+    --accent-ink:#edca6a;  /* site --darkAccent-hsl: 43.97, 78.44%, 67.25% */
+    --accent-soft:rgba(197,144,20,0.14);
+    --dim:#71706b;
+    --gold:#d5a021;
+    --silver:#b9bdc6;
+    --bronze:#c07a45;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--page);color:var(--ink);font-family:var(--sans);
+    line-height:1.5;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px 72px}
+
+  /* ---------- header ---------- */
+  header{padding:40px 0 8px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+  .wordmark{font-size:26px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+  .wordmark .drop{color:var(--accent-ink)}
+  .creed{margin-top:4px;font-size:11px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--ink-3)}
+  .event-badge{text-align:right;font-size:12px;color:var(--ink-2)}
+  .event-badge strong{display:block;color:var(--ink);font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+
+  /* ---------- hero ---------- */
+  .hero{padding:44px 0 36px;border-bottom:1px solid var(--hairline)}
+  .hero-kicker{font-size:12px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:10px}
+  .hero-row{display:flex;align-items:baseline;gap:20px;flex-wrap:wrap}
+  .hero-num{font-size:120px;font-weight:900;line-height:.9;letter-spacing:-.02em}
+  .hero-num sup{font-size:40px;font-weight:800;vertical-align:super;color:var(--ink-2)}
+  .hero-copy{max-width:460px}
+  .hero-copy h1{font-size:22px;font-weight:800;line-height:1.25;text-transform:uppercase;letter-spacing:.04em}
+  .hero-copy p{margin-top:10px;color:var(--ink-2);font-size:14.5px}
+  .hero-copy p strong{color:var(--ink)}
+
+  /* ---------- stat tiles ---------- */
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:32px 0 8px}
+  .tile{background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:16px 16px 14px}
+  .tile .label{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+  .tile .value{font-size:34px;font-weight:750;margin-top:4px}
+  .tile .note{font-size:12px;color:var(--ink-2);margin-top:2px}
+  .tile .note.up{color:var(--accent-ink);font-weight:600}
+
+  /* ---------- sections ---------- */
+  section{margin-top:52px}
+  .sec-kicker{font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--accent-ink)}
+  .sec-title{font-size:20px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-top:6px}
+  .sec-sub{color:var(--ink-2);font-size:13.5px;margin-top:6px;max-width:640px}
+
+  /* ---------- medals ---------- */
+  .medals{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:20px}
+  .medal-card{background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:18px;display:flex;align-items:center;gap:14px}
+  .medal-dot{width:44px;height:44px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#141414}
+  .medal-dot.g{background:var(--gold)}
+  .medal-dot.s{background:var(--silver)}
+  .medal-dot.b{background:var(--bronze)}
+  .medal-count{font-size:36px;font-weight:750;line-height:1}
+  .medal-name{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-top:3px}
+  .medal-line{margin-top:14px;font-size:13.5px;color:var(--ink-2);max-width:640px}
+  .medal-line strong{color:var(--ink)}
+
+  /* ---------- bar chart ---------- */
+  .chart-card{background:var(--surface);border:1px solid var(--ring);border-radius:12px;padding:22px 22px 16px;margin-top:20px;position:relative}
+  .chart{position:relative;margin-top:8px}
+  .row{display:grid;grid-template-columns:208px 1fr;align-items:center;min-height:30px;border-radius:6px;outline:none;cursor:default}
+  .row:hover,.row:focus-visible{background:var(--surface-2)}
+  .row:focus-visible{box-shadow:0 0 0 1px var(--ring) inset}
+  .row .team{font-size:12px;color:var(--ink-2);padding-right:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .row .team .rk{color:var(--ink-3);font-weight:600;display:inline-block;width:22px}
+  .row.me .team{color:var(--ink);font-weight:800;letter-spacing:.02em}
+  .track{position:relative;height:30px;display:flex;align-items:center}
+  .bar{height:18px;background:var(--dim);border-radius:0 4px 4px 0;position:relative;transition:filter .12s ease}
+  .row:hover .bar,.row:focus-visible .bar{filter:brightness(1.15)}
+  .row.me .bar{background:var(--accent)}
+  .bar-val{position:absolute;left:100%;margin-left:8px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:650;color:var(--ink-2);font-variant-numeric:tabular-nums}
+  .row.me .bar-val{color:var(--ink);font-weight:800}
+  .plot{position:relative}
+  .podium-rule{position:absolute;top:-6px;bottom:-2px;width:1px;background:var(--baseline)}
+  .podium-flag{position:absolute;top:-24px;transform:translateX(-50%);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+  .gap-note{margin-top:14px;padding-top:12px;border-top:1px solid var(--hairline);font-size:13px;color:var(--ink-2)}
+  .gap-note strong{color:var(--accent-ink)}
+
+  /* ---------- highlights ---------- */
+  .mvp{background:linear-gradient(135deg,rgba(197,144,20,.16),rgba(197,144,20,.04)),var(--surface);border:1px solid var(--ring);box-shadow:3px 0 0 var(--accent) inset;border-radius:12px;padding:22px;margin-top:20px}
+  .mvp .tag{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--accent-ink)}
+  .mvp .who{font-size:30px;font-weight:850;margin-top:6px;text-transform:uppercase;letter-spacing:.02em}
+  .mvp .why{margin-top:6px;color:var(--ink-2);font-size:14px;max-width:560px}
+  .mvp .why strong{color:var(--ink)}
+  .hl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:12px}
+  .hl{background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:16px}
+  .hl .label{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+  .hl .big{font-size:24px;font-weight:800;margin-top:4px}
+  .hl .big small{font-size:13px;font-weight:650;color:var(--ink-2)}
+  .hl .why{font-size:12.5px;color:var(--ink-2);margin-top:4px}
+  .reel{margin-top:12px;background:var(--surface);border:1px solid var(--ring);border-radius:12px;padding:18px 20px}
+  .reel .label{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
+  .reel-list{display:flex;flex-wrap:wrap;gap:8px}
+  .fin{display:inline-flex;align-items:baseline;gap:7px;background:var(--surface-2);border:1px solid var(--ring);border-radius:999px;padding:5px 13px;font-size:12.5px;color:var(--ink-2)}
+  .fin b{color:var(--ink);font-weight:750;font-variant-numeric:tabular-nums}
+  .fin .gi{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+  .reel .foot{margin-top:12px;font-size:12.5px;color:var(--ink-3)}
+
+  /* tooltip */
+  .tip{position:fixed;z-index:30;pointer-events:none;background:#242427;border:1px solid var(--ring);border-radius:8px;padding:10px 12px;font-size:12.5px;min-width:190px;box-shadow:0 8px 24px rgba(0,0,0,.5);opacity:0;transition:opacity .1s}
+  .tip.show{opacity:1}
+  .tip .t-team{font-weight:700;font-size:12px;color:var(--ink-2);margin-bottom:4px}
+  .tip .t-pts{font-size:18px;font-weight:800;color:var(--ink)}
+  .tip .t-meta{margin-top:4px;color:var(--ink-2)}
+  .tip .t-meta span{color:var(--ink);font-weight:650}
+
+  /* ---------- part dividers ---------- */
+  .part{display:flex;align-items:center;gap:16px;margin-top:72px}
+  .part .line{flex:1;height:1px;background:var(--hairline)}
+  .part .p-kick{font-size:11px;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+  .part .p-kick b{color:var(--accent-ink)}
+
+  /* ---------- targets (part II) ---------- */
+  .tgts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:20px}
+  .tgt{background:var(--surface);border:1px solid var(--ring);border-radius:12px;padding:18px}
+  .tgt .head{display:flex;align-items:center;gap:10px}
+  .tgt .head .medal-dot{width:34px;height:34px;font-size:11px}
+  .tgt .head .t-name{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+  .tgt .gap{font-size:28px;font-weight:750;margin-top:10px}
+  .tgt .gap small{font-size:12px;font-weight:600;color:var(--ink-3)}
+  .tgt .route{font-size:12.5px;color:var(--ink-2);margin-top:6px}
+  .tgt .route strong{color:var(--ink)}
+  .ladder{margin-top:12px;background:var(--surface);border:1px solid var(--ring);border-radius:12px;padding:20px;position:relative}
+  .ladder h3{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+  .ladder .note{font-size:11.5px;color:var(--ink-3);margin-top:2px}
+  .lad-plot{position:relative;margin-top:26px}
+  .lad-rule{position:absolute;top:-6px;bottom:0;width:1px;background:var(--baseline)}
+  .lad-flag{position:absolute;top:-22px;transform:translateX(-50%);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+  .lrow{display:grid;grid-template-columns:152px 1fr;align-items:center;min-height:28px}
+  .lrow .n{font-size:11.5px;color:var(--ink-2);padding-right:10px;white-space:nowrap}
+  .lrow .n b{color:var(--ink);font-size:12.5px}
+  .lrow .t{position:relative;height:28px;display:flex;align-items:center}
+  .lrow .b{height:15px;background:var(--dim);border-radius:0 4px 4px 0;position:relative}
+  .lrow.tg .b{background:var(--accent)}
+  .lrow .v{position:absolute;left:100%;margin-left:7px;top:50%;transform:translateY(-50%);font-size:11.5px;font-weight:700;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .lrow.tg .v{color:var(--ink)}
+  .math-fine{margin-top:14px;font-size:11.5px;color:var(--ink-3);max-width:680px}
+  .rally{margin-top:24px;background:linear-gradient(135deg,rgba(197,144,20,.18),rgba(197,144,20,.05)),var(--surface);border:1px solid var(--ring);box-shadow:3px 0 0 var(--accent) inset;border-radius:12px;padding:22px;font-size:17px;font-weight:750;letter-spacing:.01em}
+  .rally small{display:block;margin-top:6px;font-size:12.5px;font-weight:500;color:var(--ink-2)}
+
+  /* ---------- pound for pound ---------- */
+  .duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-top:20px}
+  .mini{background:var(--surface);border:1px solid var(--ring);border-radius:12px;padding:18px 20px 14px}
+  .mini h3{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+  .mini .note{font-size:11.5px;color:var(--ink-3);margin-top:2px}
+  .mini .rows{margin-top:12px}
+  .mrow{display:grid;grid-template-columns:104px 1fr;align-items:center;min-height:26px}
+  .mrow .n{font-size:12px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:10px}
+  .mrow.me .n{color:var(--ink);font-weight:800}
+  .mrow .t{position:relative;height:26px;display:flex;align-items:center}
+  .mrow .b{height:14px;background:var(--dim);border-radius:0 4px 4px 0;position:relative}
+  .mrow.me .b{background:var(--accent)}
+  .mrow .v{position:absolute;left:100%;margin-left:7px;top:50%;transform:translateY(-50%);font-size:11.5px;font-weight:650;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .mrow.me .v{color:var(--ink);font-weight:800}
+  .p4p-note{margin-top:14px;font-size:13.5px;color:var(--ink-2);max-width:680px}
+  .p4p-note strong{color:var(--ink)}
+  .p4p-fine{margin-top:8px;font-size:11.5px;color:var(--ink-3)}
+
+  /* ---------- squad ---------- */
+  .squad{margin-top:20px;background:var(--surface);border:1px solid var(--ring);border-radius:12px;overflow:hidden}
+  .squad-row{display:grid;grid-template-columns:220px 1fr;gap:10px;padding:13px 20px;border-top:1px solid var(--hairline);align-items:baseline}
+  .squad-row:first-child{border-top:none}
+  .squad-row .name{font-weight:700;font-size:14px}
+  .squad-row .name small{display:block;font-weight:500;font-size:11.5px;color:var(--ink-3);letter-spacing:.04em}
+  .squad-row .divs{font-size:12.5px;color:var(--ink-2)}
+  .squad-row .divs .chip{display:inline-block;background:var(--surface-2);border:1px solid var(--ring);border-radius:999px;padding:2px 10px;margin:2px 6px 2px 0}
+  .squad-foot{padding:13px 20px;border-top:1px solid var(--hairline);font-size:12.5px;color:var(--ink-3)}
+  .squad-foot strong{color:var(--ink-2)}
+
+  /* ---------- table ---------- */
+  .tbl-card{margin-top:20px;background:var(--surface);border:1px solid var(--ring);border-radius:12px;overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:13px;min-width:560px}
+  th{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);text-align:right;padding:12px 14px;border-bottom:1px solid var(--hairline)}
+  th:nth-child(1),th:nth-child(2){text-align:left}
+  td{padding:10px 14px;border-bottom:1px solid var(--hairline);text-align:right;color:var(--ink-2);font-variant-numeric:tabular-nums}
+  td:nth-child(1),td:nth-child(2){text-align:left}
+  tr:last-child td{border-bottom:none}
+  tr.me td{background:var(--accent-soft);color:var(--ink);font-weight:650}
+  tr.me td:first-child{box-shadow:3px 0 0 var(--accent) inset}
+  .medal-mini{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:1px}
+
+  /* ---------- footer ---------- */
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--hairline);font-size:12px;color:var(--ink-3)}
+  footer a{color:var(--ink-2)}
+
+  @media (max-width:640px){
+    .hero-num{font-size:84px}
+    .row{grid-template-columns:120px 1fr}
+    .squad-row{grid-template-columns:1fr}
+  }
+</style>
 </head>
 <body>
-  <h1>bloodline results</h1>
+<div class="wrap">
+
+  <header>
+    <div>
+      <div class="wordmark">Bloodline <span class="drop">Gym</span></div>
+      <div class="creed">Fighting · Fitness · Family</div>
+    </div>
+    <div class="event-badge">
+      <strong>Grappling Industries London</strong>
+      11 July 2026 · 1,036 athletes · 100+ clubs
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="hero-kicker">Official team standings — Adults</div>
+    <div class="hero-row">
+      <div class="hero-num">4<sup>th</sup></div>
+      <div class="hero-copy">
+        <h1>Out of 100+ clubs<br>at GI London.</h1>
+        <p>One Saturday's work: <strong>746 team points</strong>, <strong>9 medals</strong> and <strong>61 matches</strong>. Only one club in the whole building fought more than we did.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="part"><div class="line"></div><div class="p-kick"><b>Part I</b> · This comp</div><div class="line"></div></div>
+
+  <div class="kpis">
+    <div class="tile"><div class="label">Team points</div><div class="value">746</div><div class="note">Overall Team – Adults</div></div>
+    <div class="tile"><div class="label">Medals</div><div class="value">9</div><div class="note">3 gold · 4 silver · 2 bronze</div></div>
+    <div class="tile"><div class="label">Match wins</div><div class="value">27</div><div class="note up">4th-most of any club</div></div>
+    <div class="tile"><div class="label">Matches fought</div><div class="value">61</div><div class="note up">2nd-most of any club</div></div>
+    <div class="tile"><div class="label">Athletes</div><div class="value">10</div><div class="note">74.6 pts per athlete</div></div>
+  </div>
+
+  <section>
+    <div class="sec-kicker">The hardware</div>
+    <div class="sec-title">Nine podiums in one day</div>
+    <div class="medals">
+      <div class="medal-card"><div class="medal-dot g">1st</div><div><div class="medal-count">3</div><div class="medal-name">Gold</div></div></div>
+      <div class="medal-card"><div class="medal-dot s">2nd</div><div><div class="medal-count">4</div><div class="medal-name">Silver</div></div></div>
+      <div class="medal-card"><div class="medal-dot b">3rd</div><div><div class="medal-count">2</div><div class="medal-name">Bronze</div></div></div>
+    </div>
+    <p class="medal-line">We entered <strong>17 divisions</strong> and medalled in <strong>9</strong> of them — a medal roughly every other start. And the club that took 3rd? They finished with exactly one more medal than us, 10 to our 9.</p>
+  </section>
+
+  <section>
+    <div class="sec-kicker">Highlights</div>
+    <div class="sec-title">Performances of the day</div>
+
+    <div class="mvp">
+      <div class="tag">MVP — Performance of the day</div>
+      <div class="who">Oyin Bishi</div>
+      <div class="why">Won <strong>all four of her matches</strong> across two divisions, <strong>three by submission</strong> — including the quickest finish anyone on the team managed all day: <strong>a tap in 40 seconds</strong>.</div>
+    </div>
+
+    <div class="hl-grid">
+      <div class="hl">
+        <div class="label">Most wins</div>
+        <div class="big">Ghadir Malek <small>· 6</small></div>
+        <div class="why">Three gi submissions, one loss to an Ignite lad — then took the rematch off him on decision. Settled.</div>
+      </div>
+      <div class="hl">
+        <div class="label">Fastest finish</div>
+        <div class="big">0:40 <small>· Oyin Bishi</small></div>
+        <div class="why">Her no-gi sub — forty seconds flat. Most of us take longer to warm up.</div>
+      </div>
+      <div class="hl">
+        <div class="label">Double duty</div>
+        <div class="big">Amani Amani <small>· 5</small></div>
+        <div class="why">Five wins split across gi and no-gi, and didn't drop a single no-gi match — finished that bracket with a sub.</div>
+      </div>
+    </div>
+
+    <div class="reel">
+      <div class="label">The finish reel — every Bloodline submission of the day</div>
+      <div class="reel-list">
+        <span class="fin"><b>0:40</b> Oyin Bishi <span class="gi">No-Gi</span></span>
+        <span class="fin"><b>1:21</b> Adeoye Thomas <span class="gi">No-Gi</span></span>
+        <span class="fin"><b>1:27</b> Mati Santana <span class="gi">No-Gi</span></span>
+        <span class="fin"><b>1:39</b> Oyin Bishi <span class="gi">Gi</span></span>
+        <span class="fin"><b>1:58</b> Oliver Schneider <span class="gi">No-Gi</span></span>
+        <span class="fin"><b>2:16</b> Ghadir Malek <span class="gi">Gi</span></span>
+        <span class="fin"><b>2:40</b> Amani Amani <span class="gi">Gi</span></span>
+        <span class="fin"><b>2:40</b> Oyin Bishi <span class="gi">No-Gi</span></span>
+        <span class="fin"><b>2:50</b> Mati Santana <span class="gi">No-Gi</span></span>
+        <span class="fin"><b>2:54</b> Ghadir Malek <span class="gi">Gi</span></span>
+        <span class="fin"><b>3:12</b> Ghadir Malek <span class="gi">Gi</span></span>
+        <span class="fin"><b>3:49</b> Serenay Yilmaz <span class="gi">Gi</span></span>
+        <span class="fin"><b>4:45</b> Amani Amani <span class="gi">No-Gi</span></span>
+        <span class="fin"><b>4:46</b> Adeoye Thomas <span class="gi">Gi</span></span>
+      </div>
+      <div class="foot">14 subs in total — more than half our wins ended in a tap, and they came from seven different people.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">The podium chase</div>
+    <div class="sec-title">746 points. 216 off the podium.</div>
+    <p class="sec-sub">The official Smoothcomp table, top 8 shown. Hover a bar for the full record.</p>
+
+    <div class="chart-card">
+      <div class="chart" id="chart"></div>
+      <div class="gap-note">The line is 3rd place (962). We finished <strong>216 short</strong> of it — and 79 clear of the club behind us.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">Pound for pound</div>
+    <div class="sec-title">Head to head with the top three</div>
+    <p class="sec-sub">How we stack up against the three clubs that beat us, per athlete brought.</p>
+
+    <div class="duo">
+      <div class="mini">
+        <h3>Points per athlete</h3>
+        <div class="note">Team points ÷ adult athletes fielded</div>
+        <div class="rows">
+          <div class="mrow"><div class="n">Ignite MMA</div><div class="t"><div class="b" style="width:72%"><span class="v">122.0</span></div></div></div>
+          <div class="mrow"><div class="n">Third Space</div><div class="t"><div class="b" style="width:56.5%"><span class="v">95.7</span></div></div></div>
+          <div class="mrow"><div class="n">CheckMat FZ</div><div class="t"><div class="b" style="width:47.3%"><span class="v">80.2</span></div></div></div>
+          <div class="mrow me"><div class="n">Bloodline</div><div class="t"><div class="b" style="width:44%"><span class="v">74.6</span></div></div></div>
+        </div>
+      </div>
+      <div class="mini">
+        <h3>Match wins per athlete</h3>
+        <div class="note">Match wins ÷ adult athletes fielded</div>
+        <div class="rows">
+          <div class="mrow"><div class="n">Ignite MMA</div><div class="t"><div class="b" style="width:80%"><span class="v">4.6</span></div></div></div>
+          <div class="mrow me"><div class="n">Bloodline</div><div class="t"><div class="b" style="width:47%"><span class="v">2.7</span></div></div></div>
+          <div class="mrow"><div class="n">Third Space</div><div class="t"><div class="b" style="width:44%"><span class="v">2.5</span></div></div></div>
+          <div class="mrow"><div class="n">CheckMat FZ</div><div class="t"><div class="b" style="width:44%"><span class="v">2.5</span></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="p4p-note">Here's the bit worth knowing: per person, we <strong>out-won the club that won the whole thing</strong> — 2.7 wins each against 2.5 for Third Space and CheckMat — and took <strong>more medals per athlete than CheckMat</strong> (0.9 vs 0.8). On points per person we were <strong>within 7% of the podium clubs</strong>. Ignite are the outlier — nine people averaging 122. That's the level to aim at.</p>
+    <p class="p4p-fine">Adult rosters counted from the event athlete list (approved Adult, Master &amp; Senior division registrations): Third Space 12 · Ignite MMA 9 · CheckMat Fight Zone London 12 · Bloodline 10.</p>
+  </section>
+
+  <section>
+    <div class="sec-kicker">The squad</div>
+    <div class="sec-title">Who was on the mats</div>
+    <p class="sec-sub">Everyone who competed for Bloodline in the adult divisions — all ten counted towards the team score.</p>
+    <div class="squad" id="squad"></div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">The table</div>
+    <div class="sec-title">Official top 10 — Overall Team, Adults</div>
+    <div class="tbl-card">
+      <table id="tbl">
+        <thead><tr><th>#</th><th>Club</th><th>Points</th><th>Wins</th><th>Losses</th><th><span class="medal-mini" style="background:var(--gold)"></span>G</th><th><span class="medal-mini" style="background:var(--silver)"></span>S</th><th><span class="medal-mini" style="background:var(--bronze)"></span>B</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="part"><div class="line"></div><div class="p-kick"><b>Part II</b> · The road ahead</div><div class="line"></div></div>
+
+  <section style="margin-top:40px">
+    <div class="sec-kicker">Next time out</div>
+    <div class="sec-title">What it takes next time</div>
+    <p class="sec-sub">We averaged 74.6 points per person this time out. Keep that standard and the rest is headcount — here's what each step of the podium actually costs.</p>
+
+    <div class="tgts">
+      <div class="tgt">
+        <div class="head"><div class="medal-dot b">3rd</div><div class="t-name">Team bronze</div></div>
+        <div class="gap">+3 <small>athletes</small></div>
+        <div class="route">Covers the <strong>216-point gap</strong> to CheckMat. Or the same ten of us find <strong>two more gold runs</strong> between us.</div>
+      </div>
+      <div class="tgt">
+        <div class="head"><div class="medal-dot s">2nd</div><div class="t-name">Team silver</div></div>
+        <div class="gap">+5 <small>athletes</small></div>
+        <div class="route">Covers the <strong>352 points</strong> to Ignite. Or <strong>three more gold runs</strong> across the squad.</div>
+      </div>
+      <div class="tgt">
+        <div class="head"><div class="medal-dot g">1st</div><div class="t-name">London champions</div></div>
+        <div class="gap">+6 <small>athletes</small></div>
+        <div class="route">Covers the <strong>402 points</strong> to Third Space. Or <strong>four more gold runs</strong>. Sixteen of us and the title's a real conversation.</div>
+      </div>
+    </div>
+
+    <div class="ladder">
+      <h3>The roster ladder</h3>
+      <div class="note">What our score looks like with a bigger squad (at 74.6 points each), against this year's finishing line</div>
+      <div class="lad-plot">
+        <div class="lad-rule" style="left:calc(152px + (100% - 152px)*0.74)"></div>
+        <div class="lad-flag" style="left:calc(152px + (100% - 152px)*0.74)">3rd · 962</div>
+        <div class="lad-rule" style="left:calc(152px + (100% - 152px)*0.883)"></div>
+        <div class="lad-flag" style="left:calc(152px + (100% - 152px)*0.883)">1st · 1,148</div>
+        <div class="lrow"><div class="n"><b>10 athletes</b> · this comp</div><div class="t"><div class="b" style="width:57.4%"><span class="v">746</span></div></div></div>
+        <div class="lrow tg"><div class="n"><b>13</b> · podium</div><div class="t"><div class="b" style="width:74.6%"><span class="v">≈970</span></div></div></div>
+        <div class="lrow tg"><div class="n"><b>15</b> · silver</div><div class="t"><div class="b" style="width:86.1%"><span class="v">≈1,119</span></div></div></div>
+        <div class="lrow tg"><div class="n"><b>16</b> · champions</div><div class="t"><div class="b" style="width:91.8%"><span class="v">≈1,194</span></div></div></div>
+      </div>
+      <div class="math-fine">Rough maths from how this event actually scored (a gold ≈ 100 pts, a silver ≈ 60, a bronze ≈ 20, and each win ≈ 7 — so a full gold run is worth about 130 once you count the wins on the way). It also assumes the other clubs stand still. They won't — so bring seven.</div>
+    </div>
+
+    <div class="rally">
+      Same standard, six more of us on the mats, and we win this thing.
+      <small>So the plan for the next one is simple: bring a training partner. Each one is worth about 75 points to the team.</small>
+    </div>
+  </section>
+
+  <footer>
+    Source: <a href="https://grapplingindustries.smoothcomp.com/en/event/25914/toplist/119919/102366">Smoothcomp — Grappling Industries London, Overall Team – Adults toplist</a>, as published 13 July 2026 · Compiled for Bloodline Gym, 9-15 Helmsley Place, London E8.
+  </footer>
+</div>
+
+<div class="tip" id="tip" role="status" aria-hidden="true"></div>
+
+<script>
+(function(){
+  var MAX = 1200;
+  var PODIUM = 962;
+  var teams = [
+    {rk:"1",  team:"Third Space",                    pts:1148, w:30, l:16, g:8, s:2, b:2, me:false},
+    {rk:"2",  team:"Ignite MMA",                     pts:1098, w:41, l:23, g:5, s:4, b:4, me:false},
+    {rk:"3",  team:"CheckMat Fight Zone London",     pts:962,  w:30, l:25, g:6, s:3, b:1, me:false},
+    {rk:"4",  team:"Bloodline Gym",                  pts:746,  w:27, l:34, g:3, s:4, b:2, me:true },
+    {rk:"5",  team:"EQUILIBRIUMBJJ",                 pts:667,  w:23, l:15, g:4, s:2, b:0, me:false},
+    {rk:"6=", team:"10th Planet London",             pts:524,  w:26, l:13, g:1, s:4, b:3, me:false},
+    {rk:"6=", team:"London Grapple",                 pts:524,  w:20, l:9,  g:3, s:1, b:2, me:false},
+    {rk:"8",  team:"Carlson Gracie Norfolk",         pts:523,  w:24, l:12, g:3, s:1, b:2, me:false}
+  ];
+  var top10 = teams.concat([
+    {rk:"9",  team:"Axis BJJ UK",                    pts:462,  w:16, l:8,  g:2, s:2, b:3, me:false},
+    {rk:"10", team:"Combat Sports Academy (Strood)", pts:450,  w:13, l:18, g:2, s:3, b:0, me:false}
+  ]);
+  var squad = [
+    {name:"Denis George",     c:"United Kingdom", divs:["Gi · White · Adult · -155 lb","No-Gi · Beginner · Adult · -155 lb"]},
+    {name:"Ghadir Malek",     c:"Iraq",           divs:["Gi · White · Adult · -170 lb","No-Gi · Beginner · Adult · -170 lb"]},
+    {name:"Adeoye Thomas",    c:"Nigeria",        divs:["Gi · White · Adult · -200 lb","No-Gi · Beginner · Adult · -200 lb"]},
+    {name:"Oliver Schneider", c:"Switzerland",    divs:["No-Gi · Beginner · Adult · -135 lb"]},
+    {name:"Mohammed Nizam",   c:"United Kingdom", divs:["Gi · Blue · Adult · -170 lb"]},
+    {name:"Mati Santana",     c:"Spain",          divs:["Gi · White · Master 30+ · -155 lb","No-Gi · Beginner · Master 30+ · -155 lb"]},
+    {name:"Amal Solomons",    c:"United Kingdom", divs:["Gi · White · Master 30+ · -170 lb"]},
+    {name:"Serenay Yilmaz",   c:"United Kingdom", divs:["Gi · White · Master 30+ · -125 lb","No-Gi · Beginner · Master 30+ · -125 lb"]},
+    {name:"Oyin Bishi",       c:"Nigeria",        divs:["Gi · White · Master 30+ · -135 lb","No-Gi · Beginner · Master 30+ · -135 lb"]},
+    {name:"Amani Amani",      c:"Morocco",        divs:["Gi · Blue · Adult · -135 lb","No-Gi · Intermediate · Master 30+ · -135 lb"]}
+  ];
+
+  function el(tag, cls, parent){ var e=document.createElement(tag); if(cls) e.className=cls; if(parent) parent.appendChild(e); return e; }
+  function txt(parent, s){ parent.appendChild(document.createTextNode(s)); }
+
+  /* ---- chart ---- */
+  var chart = document.getElementById("chart");
+  var plot = el("div","plot",chart);
+  teams.forEach(function(t){
+    var row = el("div","row"+(t.me?" me":""),plot);
+    row.tabIndex = 0;
+    row.setAttribute("role","img");
+    row.setAttribute("aria-label", t.team+", "+t.pts+" points, "+t.w+" wins "+t.l+" losses, "+t.g+" gold "+t.s+" silver "+t.b+" bronze");
+    var name = el("div","team",row);
+    var rk = el("span","rk",name); txt(rk,t.rk);
+    txt(name,t.team);
+    var track = el("div","track",row);
+    var bar = el("div","bar",track);
+    bar.style.width = (t.pts/MAX*100)+"%";
+    var v = el("span","bar-val",bar); txt(v, t.pts.toLocaleString("en-GB"));
+    row._d = t;
+  });
+  /* podium rule at 962, positioned within the track column */
+  var firstTrack = plot.querySelector(".track");
+  function placeRule(){
+    var pr = document.getElementById("prule"); if(pr) pr.remove();
+    var fl = document.getElementById("pflag"); if(fl) fl.remove();
+    var plotBox = plot.getBoundingClientRect();
+    var trackBox = firstTrack.getBoundingClientRect();
+    var x = (trackBox.left - plotBox.left) + trackBox.width * (PODIUM/MAX);
+    var rule = el("div","podium-rule",plot); rule.id="prule";
+    rule.style.left = x+"px";
+    var flag = el("div","podium-flag",plot); flag.id="pflag";
+    flag.style.left = x+"px";
+    txt(flag,"Podium · 962");
+  }
+  placeRule();
+  window.addEventListener("resize",placeRule);
+
+  /* ---- tooltip ---- */
+  var tip = document.getElementById("tip");
+  function showTip(t, x, y){
+    while(tip.firstChild) tip.removeChild(tip.firstChild);
+    var a = el("div","t-team",tip); txt(a, t.rk.replace("=","")+" · "+t.team);
+    var b = el("div","t-pts",tip); txt(b, t.pts.toLocaleString("en-GB")+" pts");
+    var c = el("div","t-meta",tip);
+    var s1 = el("span",null,c); txt(s1, t.w+"–"+t.l); txt(c," win–loss · ");
+    var s2 = el("span",null,c); txt(s2, String(t.g)); txt(c," gold · ");
+    var s3 = el("span",null,c); txt(s3, String(t.s)); txt(c," silver · ");
+    var s4 = el("span",null,c); txt(s4, String(t.b)); txt(c," bronze");
+    tip.classList.add("show");
+    tip.setAttribute("aria-hidden","false");
+    var tw = tip.offsetWidth, th = tip.offsetHeight;
+    var left = Math.min(Math.max(8, x+14), window.innerWidth - tw - 8);
+    var top  = y - th - 12; if(top < 8) top = y + 16;
+    tip.style.left = left+"px"; tip.style.top = top+"px";
+  }
+  function hideTip(){ tip.classList.remove("show"); tip.setAttribute("aria-hidden","true"); }
+  plot.addEventListener("pointermove",function(ev){
+    var row = ev.target.closest(".row");
+    if(row && row._d){ showTip(row._d, ev.clientX, ev.clientY); } else { hideTip(); }
+  });
+  plot.addEventListener("pointerleave",hideTip);
+  plot.addEventListener("focusin",function(ev){
+    var row = ev.target.closest(".row");
+    if(row && row._d){ var r = row.getBoundingClientRect(); showTip(row._d, r.left + r.width*0.45, r.top); }
+  });
+  plot.addEventListener("focusout",hideTip);
+
+  /* ---- squad ---- */
+  var squadBox = document.getElementById("squad");
+  squad.forEach(function(a){
+    var row = el("div","squad-row",squadBox);
+    var n = el("div","name",row); txt(n,a.name);
+    var c = el("small",null,n); txt(c,a.c);
+    var d = el("div","divs",row);
+    a.divs.forEach(function(dv){ var ch = el("span","chip",d); txt(ch,dv); });
+  });
+  var foot = el("div","squad-foot",squadBox);
+  txt(foot,"Ten of us, from ");
+  var st = el("strong",null,foot); txt(st,"six countries");
+  txt(foot," — the UK, Iraq, Nigeria, Spain, Switzerland and Morocco — across seventeen divisions and sixty-one matches.");
+
+  /* ---- table ---- */
+  var tbody = document.querySelector("#tbl tbody");
+  top10.forEach(function(t){
+    var tr = document.createElement("tr");
+    if(t.me) tr.className="me";
+    [t.rk, t.team, t.pts.toLocaleString("en-GB"), t.w, t.l, t.g, t.s, t.b].forEach(function(vall){
+      var td = document.createElement("td"); txt(td, String(vall)); tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+})();
+</script>
 </body>
 </html>
